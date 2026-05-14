@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PurpleStream Recorder</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f0f1a;
+    color: #fff;
+    padding: 20px;
+}
+
+    .logo {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: #a78bfa;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .status-box {
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      background: #888;
+    }
+
+    .status-dot.recording { background: #f87171; animation: pulse 1s infinite; }
+    .status-dot.ready { background: #34d399; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    #timer {
+      font-size: 28px;
+      font-weight: 700;
+      color: #a78bfa;
+      margin: 10px 0 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-record { background: linear-gradient(135deg, #6c63ff, #a855f7); color: #fff; }
+    .btn-stop   { background: linear-gradient(135deg, #f87171, #ef4444); color: #fff; }
+
+    .input-group { margin-bottom: 12px; }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 9px 12px;
+      background: #1a1a2e;
+      border: 1px solid #2a2a4a;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .input-group input:focus { border-color: #6c63ff; }
+
+    .progress-wrap {
+      background: #1a1a2e;
+      border-radius: 6px;
+      height: 8px;
+      margin: 10px 0;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #6c63ff, #a855f7);
+      width: 0%;
+      transition: width 0.3s;
+      border-radius: 6px;
+    }
+
+    #message {
+      font-size: 12px;
+      text-align: center;
+      min-height: 18px;
+      color: #a0a8c0;
+      margin-top: 4px;
+    }
+
+    #message.success { color: #34d399; }
+    #message.error   { color: #f87171; }
+
+    .auth-section {
+      border-top: 1px solid #2a2a4a;
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+
+    .auth-section p {
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .auth-section a {
+      color: #a78bfa;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">🎬 PurpleStream</div>
+
+  <!-- Auth -->
+  <div id="auth-section" class="auth-section">
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="your@email.com" />
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="••••••••" />
+    </div>
+    <button class="btn btn-record" id="login-btn">Login to PurpleStream</button>
+    <p>Don't have an account? <a href="https://video-streaming-livid-eight.vercel.app/register" target="_blank">Register</a></p>
+  </div>
+
+  <!-- Recorder (shown after login) -->
+  <div id="recorder-section" style="display:none">
+    <div class="input-group">
+      <label>Video Title</label>
+      <input type="text" id="title" placeholder="Enter title..." />
+    </div>
+    <div class="input-group">
+      <label>Description (optional)</label>
+      <input type="text" id="description" placeholder="Enter description..." />
+    </div>
+
+    <div class="status-box">
+      <div>
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">Ready to record</span>
+      </div>
+      <div id="timer">00:00</div>
+    </div>
+
+    <button class="btn btn-record" id="start-btn">⏺ Start Recording</button>
+    <button class="btn btn-stop" id="stop-btn" disabled>⏹ Stop & Upload</button>
+
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div id="message"></div>
+
+    <div style="text-align:center; margin-top:12px;">
+      <small style="color:#555; cursor:pointer" id="logout-btn">Logout</small>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

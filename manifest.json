@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "PurpleStream Recorder",
+  "version": "1.0",
+  "description": "Record screen and auto-upload to PurpleStream",
+  "permissions": [
+    "storage",
+    "tabs",
+    "desktopCapture"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "PurpleStream Recorder"
+  }
+}
