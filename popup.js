@@ -1,4 +1,4 @@
-const API = 'https://heroic-smile-production.up.railway.app';
+const API = 'https://purple-streaming.onrender.com';
 
 let mediaRecorder = null;
 let recordedChunks = [];
